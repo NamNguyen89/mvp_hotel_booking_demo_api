@@ -4,12 +4,10 @@ import com.namnguyen.mvphotelbookingapi.models.dto.HotelAvailabilityDTO;
 import com.namnguyen.mvphotelbookingapi.models.dto.HotelSearchDTO;
 import com.namnguyen.mvphotelbookingapi.services.HotelSearchService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -25,14 +23,7 @@ public class HotelSearchController {
     private final HotelSearchService hotelSearchService;
 
     @PostMapping("/hotels")
-    public ResponseEntity<Object> findAvailableHotelsByCityAndDate(@RequestBody HotelSearchDTO hotelSearchDTO,
-                                                                   BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid input");
-        }
-
+    public ResponseEntity<Object> findAvailableHotelsByCityAndDate(@RequestBody HotelSearchDTO hotelSearchDTO) {
         try {
             validateCheckinAndCheckoutDates(hotelSearchDTO.getCheckinDate(), hotelSearchDTO.getCheckoutDate());
         } catch (IllegalArgumentException e) {

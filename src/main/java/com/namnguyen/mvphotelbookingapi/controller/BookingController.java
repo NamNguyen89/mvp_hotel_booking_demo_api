@@ -7,14 +7,12 @@ import com.namnguyen.mvphotelbookingapi.models.dto.UserDTO;
 import com.namnguyen.mvphotelbookingapi.services.BookingService;
 import com.namnguyen.mvphotelbookingapi.services.HotelService;
 import com.namnguyen.mvphotelbookingapi.services.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -42,18 +40,11 @@ public class BookingController {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<Object> confirmBooking(@RequestBody BookingInitiationDTO bookingInitiationDTO,
-                                                 BindingResult result) {
+    public ResponseEntity<Object> confirmBooking(@RequestBody BookingInitiationDTO bookingInitiationDTO) {
         if (bookingInitiationDTO == null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("Your session has expired. Please start a new search.");
-        }
-
-        if (result.hasErrors()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Validation errors occurred while completing booking");
         }
 
         try {
